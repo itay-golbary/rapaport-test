@@ -1,18 +1,18 @@
-import React, {FC, useEffect} from "react";
+import React, { FC, useEffect } from "react";
 import { useCatalogFilters } from "./hooks/useCatalogFilters";
 
 const CatalogView: FC = () => {
   const { filters, handlers } = useCatalogFilters();
 
   useEffect(() => {
-    console.log("filters", filters)
-  }, [filters])
+    console.log("filters", filters);
+  }, [filters]);
 
   useEffect(() => {
-    console.log("handlers", handlers)
-  }, [handlers])
+    console.log("handlers", handlers);
+  }, [handlers]);
 
-  return <div />;
+  return <div>Catalog</div>;
 };
 
 export { CatalogView };
