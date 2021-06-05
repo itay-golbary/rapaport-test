@@ -1,4 +1,5 @@
 import React, { FC, useEffect } from "react";
+
 import { useCatalogFilters } from "./hooks/useCatalogFilters";
 
 const CatalogView: FC = () => {

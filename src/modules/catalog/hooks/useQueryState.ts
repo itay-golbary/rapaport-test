@@ -1,4 +1,6 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useUrlQuery } from "../../../navigation";
 
 type HandleChangeState<T> = (value: T) => void;
 
@@ -13,10 +15,34 @@ const useQueryState: UseQueryState = (
   defaultValue,
   onChangeCallback
 ) => {
+  const { queryValueStringify } = useUrlQuery(urlName);
+
   const [state, setState] = useState(() => {
-    const value = defaultValue;
+    let value = defaultValue;
 
     // TODO: get value from url query if exists
+    if (queryValueStringify) {
+      switch (typeof defaultValue) {
+        case "string": {
+          value = queryValueStringify as typeof defaultValue;
+
+          break;
+        }
+        case "number": {
+          value = Number(queryValueStringify) as typeof defaultValue;
+
+          break;
+        }
+        case "boolean": {
+          value = (queryValueStringify === "true") as typeof defaultValue;
+
+          break;
+        }
+        case "object": {
+          break;
+        }
+      }
+    }
 
     return value;
   });
