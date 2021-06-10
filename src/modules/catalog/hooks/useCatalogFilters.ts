@@ -1,31 +1,48 @@
-import { useQueryState } from "./useQueryState";
-import { Clarity, DiamondColor, Shape, StoneType } from "../../stones/types";
+import { useQueryParam, NumberParam, StringParam } from "use-query-params";
+import { useCallback, useEffect, useMemo } from "react";
+import { StoneType } from "../../stones/types";
+import { Filters } from "./types";
 
 const useCatalogFilters = () => {
-  const [page, onChangePage] = useQueryState("page", 0);
-  const [pageSize, onChangePageSize] = useQueryState("pageSize", 10);
+  const [page, onChangePage] = useQueryParam("page", NumberParam);
+  const [pageSize, onChangePageSize] = useQueryParam("pageSize", NumberParam);
 
-  const [searchQuery, onChangeSearchQuery] = useQueryState("query", "");
+  const [searchQuery, onChangeSearchQuery] = useQueryParam(
+    "query",
+    StringParam
+  );
 
-  const [selectedType, onChangeSelectedType] = useQueryState(
+  const [selectedType, onChangeSelectedType] = useQueryParam(
     "type",
-    "" as StoneType
+    StringParam
   );
-  const [selectedShape, onChangeSelectedShape] = useQueryState(
+  const [selectedShape, onChangeSelectedShape] = useQueryParam(
     "shape",
-    "" as Shape
+    StringParam
   );
-  const [selectedClarity, onChangeSelectedClarity] = useQueryState(
+  const [selectedClarity, onChangeSelectedClarity] = useQueryParam(
     "clarity",
-    "" as Clarity
+    StringParam
   );
-  const [selectedColor, onChangeSelectedColor] = useQueryState(
+  const [selectedColor, onChangeSelectedColor] = useQueryParam(
     "color",
-    "" as DiamondColor
+    StringParam
   );
 
-  return {
-    filters: {
+  useEffect(() => {
+    console.log("searchQuery", searchQuery);
+  }, [searchQuery]);
+
+  const handleChangeSelectedType = useCallback((newValue: StoneType) => {
+    if (newValue !== "Diamond" && selectedColor) {
+      onChangeSelectedColor(undefined);
+    }
+
+    onChangeSelectedType(newValue);
+  }, []);
+
+  const filters: Filters = useMemo(
+    () => ({
       page,
       pageSize,
 
@@ -35,14 +52,29 @@ const useCatalogFilters = () => {
       selectedShape,
       selectedClarity,
       selectedColor,
-    },
+    }),
+    [
+      page,
+      pageSize,
+
+      searchQuery,
+
+      selectedType,
+      selectedShape,
+      selectedClarity,
+      selectedColor,
+    ]
+  );
+
+  return {
+    filters,
     handlers: {
       onChangePage,
       onChangePageSize,
 
       onChangeSearchQuery,
 
-      onChangeSelectedType,
+      onChangeSelectedType: handleChangeSelectedType,
       onChangeSelectedShape,
       onChangeSelectedClarity,
       onChangeSelectedColor,
