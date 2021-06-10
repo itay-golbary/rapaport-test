@@ -39,7 +39,7 @@ export type DiamondColor =
   | "O"
   | "P";
 
-interface Stone {
+interface BaseStone {
   id: number;
   type: StoneType;
   shape: Shape;
@@ -47,14 +47,16 @@ interface Stone {
   color?: DiamondColor;
 }
 
-interface Gem extends Stone {
+interface Gem extends BaseStone {
   type: "Ruby" | "Sapphire";
   color?: never;
 }
 
-interface Diamond extends Stone {
+interface Diamond extends BaseStone {
   type: "Diamond";
   color: DiamondColor;
 }
 
-export type Stones = (Gem | Diamond)[];
+export type Stone = Gem | Diamond;
+
+export type Stones = Stone[];

@@ -10,5 +10,5 @@ export interface Filters {
   selectedColor?: string | null;
 
   sortBy?: string | null;
-  groupBy?: string | null;
+  // groupBy?: string | null;
 }

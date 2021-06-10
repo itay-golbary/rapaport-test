@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from "react";
 
 import { useCatalogFilters } from "./hooks/useCatalogFilters";
-import { useCatalogProducts } from "./hooks/useCatalogProducts/useCatalogProducs";
+import { useCatalogProducts } from "./hooks/useCatalogProducts";
 
 const CatalogView: FC = () => {
   const { filters, handlers } = useCatalogFilters();

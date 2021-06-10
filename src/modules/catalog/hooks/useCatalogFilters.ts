@@ -29,6 +29,8 @@ const useCatalogFilters = () => {
     StringParam
   );
 
+  const [sortBy, onChangeSortBy] = useQueryParam("sortBy", StringParam);
+
   const handleChangeSelectedType = useCallback((newValue: StoneType) => {
     if (newValue !== "Diamond" && selectedColor) {
       onChangeSelectedColor(undefined);
@@ -48,6 +50,8 @@ const useCatalogFilters = () => {
       selectedShape,
       selectedClarity,
       selectedColor,
+
+      sortBy,
     }),
     [
       page,
@@ -59,6 +63,8 @@ const useCatalogFilters = () => {
       selectedShape,
       selectedClarity,
       selectedColor,
+
+      sortBy,
     ]
   );
 
@@ -74,6 +80,8 @@ const useCatalogFilters = () => {
       onChangeSelectedShape,
       onChangeSelectedClarity,
       onChangeSelectedColor,
+
+      onChangeSortBy,
     },
   };
 };

@@ -5,7 +5,7 @@ import {
 } from "./types";
 import stones from "../../../stones";
 import Fuse from "fuse.js";
-import { Stones } from "../../../stones/types";
+import { Stone, Stones } from "../../../stones/types";
 
 const initialCatalogState: CatalogState = {
   initial: stones,
@@ -45,17 +45,13 @@ const handleSearchCatalog: HandleChangeCatalog = (
   filters
   // callback
 ) => {
-  const sortKey = filters.sortBy ?? "type";
-
   const fuse = new Fuse(filtered, {
-    // shouldSort: true,
     findAllMatches: true,
-    sortFn: (a, b) => (a.item[sortKey] ? 1 : -1),
     keys: ["type", "shape", "clarity", "color"],
   });
 
   const searched: Stones = filters.searchQuery
-    ? fuse.search(filters.searchQuery).map(({ item }) => item) // type issue with library
+    ? fuse.search(filters.searchQuery).map(({ item }) => item)
     : filtered;
 
   const newState = {
@@ -77,12 +73,14 @@ const handleSortCatalog: HandleChangeCatalog = (
   filters
   // callback
 ) => {
+  const sorted = handleSortStones(searched, filters.sortBy);
+
   const newState = {
     ...initialCatalogState,
     initial,
     filtered,
     searched,
-    sorted: searched, // TODO: sort
+    sorted,
   };
 
   // return handleGroupCatalog(newState, filters);
@@ -108,6 +106,49 @@ const handleSortCatalog: HandleChangeCatalog = (
 //
 //   return newState;
 // };
+
+type HandleSortStones = (state: Stones, sortBy?: string | null) => Stones;
+
+const handleSortStones: HandleSortStones = (state, sortBy) => {
+  if (
+    state.length &&
+    sortBy &&
+    sortBy !== "id" &&
+    Object.keys(state[0]).includes(sortBy)
+  ) {
+    const sortByKey = sortBy as Exclude<keyof Stone, "id">;
+
+    return state.sort((a, b) => {
+      const { [sortByKey]: valueA } = a;
+      const { [sortByKey]: valueB } = b;
+
+      const fixA = valueA?.toUpperCase();
+      const fixB = valueB?.toUpperCase();
+
+      if (fixA) {
+        if (fixB) {
+          if (fixA < fixB) {
+            return -1;
+          } else if (fixA > fixB) {
+            return 1;
+          } else {
+            return 0;
+          }
+        } else {
+          return 1;
+        }
+      } else {
+        if (fixB) {
+          return -1;
+        } else {
+          return 0;
+        }
+      }
+    });
+  } else {
+    return state;
+  }
+};
 
 const stonesReducer = (
   state: CatalogState,
