@@ -31,13 +31,16 @@ const useCatalogFilters = () => {
 
   const [sortBy, onChangeSortBy] = useQueryParam("sortBy", StringParam);
 
-  const handleChangeSelectedType = useCallback((newValue: StoneType) => {
-    if (newValue !== "Diamond" && selectedColor) {
-      onChangeSelectedColor(undefined);
-    }
+  const handleChangeSelectedType = useCallback(
+    (newValue: StoneType) => {
+      if (newValue !== "Diamond" && selectedColor) {
+        onChangeSelectedColor(undefined);
+      }
 
-    onChangeSelectedType(newValue);
-  }, []);
+      onChangeSelectedType(newValue);
+    },
+    [selectedColor, onChangeSelectedColor, onChangeSelectedType]
+  );
 
   const filters: Filters = useMemo(
     () => ({

@@ -1,9 +1,9 @@
 import { useEffect, useReducer } from "react";
 
-import { useFlag } from "../../../../hooks/useFlag";
-
 import { Filters } from "../types";
 import { initialCatalogState, stonesReducer } from "./helpers";
+
+import { useFlag } from "../../../../hooks/useFlag";
 
 interface Props {
   filters: Filters;
@@ -15,7 +15,6 @@ const useCatalogProducts = ({ filters }: Props) => {
     pageSize,
     searchQuery,
     sortBy,
-    // groupBy,
     selectedType,
     selectedShape,
     selectedClarity,
@@ -41,7 +40,7 @@ const useCatalogProducts = ({ filters }: Props) => {
     });
 
     setLoadingFalse();
-  }, [selectedType, selectedShape, selectedClarity, selectedColor]);
+  }, [selectedType, selectedShape, selectedClarity, selectedColor]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setLoadingTrue();
@@ -55,7 +54,7 @@ const useCatalogProducts = ({ filters }: Props) => {
     });
 
     setLoadingFalse();
-  }, [page, pageSize, searchQuery]);
+  }, [page, pageSize, searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setLoadingTrue();
@@ -69,23 +68,7 @@ const useCatalogProducts = ({ filters }: Props) => {
     });
 
     setLoadingFalse();
-  }, [sortBy]);
-
-  // useEffect(() => {
-  //   console.log("groupBy", groupBy);
-  //
-  //   setLoadingTrue();
-  //
-  //   dispatch({
-  //     type: "group",
-  //     payload: {
-  //       filters,
-  //       // callback: setLoadingFalse
-  //     },
-  //   });
-  //
-  //   setLoadingFalse();
-  // }, [groupBy]);
+  }, [sortBy]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { isLoading, catalogState };
 };

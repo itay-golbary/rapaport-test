@@ -4,7 +4,7 @@ import { useCatalogFilters } from "./hooks/useCatalogFilters";
 import { useCatalogProducts } from "./hooks/useCatalogProducts";
 
 const CatalogView: FC = () => {
-  const { filters, handlers } = useCatalogFilters();
+  const { filters } = useCatalogFilters();
   const { catalogState } = useCatalogProducts({ filters });
 
   useEffect(() => {

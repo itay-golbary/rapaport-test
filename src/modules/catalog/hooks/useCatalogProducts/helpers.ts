@@ -1,10 +1,11 @@
+import Fuse from "fuse.js";
+
 import {
   CatalogReducerAction,
   CatalogState,
   HandleChangeCatalog,
 } from "./types";
 import stones from "../../../stones";
-import Fuse from "fuse.js";
 import { Stone, Stones } from "../../../stones/types";
 
 const initialCatalogState: CatalogState = {
