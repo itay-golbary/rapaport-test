@@ -8,6 +8,8 @@ import {
 import stones from "../../../stones";
 import { Stone, Stones } from "../../../stones/types";
 
+const DEFAULT_PAGE_SIZE = 20;
+
 const initialCatalogState: CatalogState = {
   initial: stones,
   filtered: [],
@@ -20,17 +22,18 @@ const handleFilterCatalog: HandleChangeCatalog = (
   filters
   // callback
 ) => {
+  const { selectedType, selectedShape, selectedClarity, selectedColor } =
+    filters;
+
   const newState = {
     ...initialCatalogState,
     initial: initial,
     filtered: initial.filter(
       ({ type, shape, clarity, color }) =>
-        (!filters.selectedType || type === filters.selectedType) &&
-        (!filters.selectedShape || shape === filters.selectedShape) &&
-        (!filters.selectedClarity || clarity === filters.selectedClarity) &&
-        (!filters.selectedType ||
-          filters.selectedType !== "Diamond" ||
-          color === filters.selectedColor)
+        (!selectedType || type === selectedType) &&
+        (!selectedShape || shape === selectedShape) &&
+        (!selectedClarity || clarity === selectedClarity) &&
+        (!selectedType || selectedType !== "Diamond" || color === selectedColor)
     ),
   };
 
@@ -46,13 +49,15 @@ const handleSearchCatalog: HandleChangeCatalog = (
   filters
   // callback
 ) => {
+  const { searchQuery } = filters;
+
   const fuse = new Fuse(filtered, {
     findAllMatches: true,
     keys: ["type", "shape", "clarity", "color"],
   });
 
-  const searched: Stones = filters.searchQuery
-    ? fuse.search(filters.searchQuery).map(({ item }) => item)
+  const searched: Stones = searchQuery
+    ? fuse.search(searchQuery).map(({ item }) => item)
     : filtered;
 
   const newState = {
@@ -70,11 +75,12 @@ const handleSearchCatalog: HandleChangeCatalog = (
 };
 
 const handleSortCatalog: HandleChangeCatalog = (
-  { initial, filtered, searched, ...state },
+  { initial, filtered, searched },
   filters
   // callback
 ) => {
-  const sorted = handleSortStones(searched, filters.sortBy);
+  const { sortBy } = filters;
+  const sorted = handleSortStones(searched, sortBy);
 
   const newState = {
     ...initialCatalogState,
@@ -84,29 +90,36 @@ const handleSortCatalog: HandleChangeCatalog = (
     sorted,
   };
 
-  // return handleGroupCatalog(newState, filters);
-  // return handleGroupCatalog(newState, filters, callback);
+  return handlePaginateCatalog(
+    newState,
+    filters
+    // callback
+  );
+};
+
+const handlePaginateCatalog: HandleChangeCatalog = (
+  { initial, filtered, searched, sorted },
+  filters
+  // callback
+) => {
+  const { page, pageSize } = filters;
+  const offset = (page ?? 0) * (pageSize ?? 0);
+
+  const paginated = sorted.slice(offset, pageSize || DEFAULT_PAGE_SIZE);
+
+  const newState = {
+    ...initialCatalogState,
+    initial,
+    filtered,
+    searched,
+    sorted,
+    paginated,
+  };
 
   // callback();
 
   return newState;
 };
-
-// const handleGroupCatalog: HandleChangeCatalog = (
-//   { sorted, ...state },
-//   filters
-//   // callback
-// ) => {
-//   const newState = {
-//     ...state,
-//     sorted,
-//     grouped: [sorted], // TODO: group
-//   };
-//
-//   // callback();
-//
-//   return newState;
-// };
 
 type HandleSortStones = (state: Stones, sortBy?: string | null) => Stones;
 
@@ -183,13 +196,13 @@ const stonesReducer = (
         // callback
       );
     }
-    // case "group": {
-    //   return handleGroupCatalog(
-    //     state,
-    //     filters
-    //     // callback
-    //   );
-    // }
+    case "paginate": {
+      return handlePaginateCatalog(
+        state,
+        filters
+        // callback
+      );
+    }
     default: {
       return state;
     }

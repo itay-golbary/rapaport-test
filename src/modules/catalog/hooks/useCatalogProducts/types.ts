@@ -14,11 +14,10 @@ export interface CatalogState {
   filtered: Stones;
   searched: Stones;
   sorted: Stones;
-  grouped?: Stones[];
 }
 
 export type CatalogReducerAction = {
-  type: "filter" | "search" | "sort";
+  type: "filter" | "search" | "sort" | "paginate";
   payload: {
     filters: Filters;
     // callback: Callback;

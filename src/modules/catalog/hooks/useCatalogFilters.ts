@@ -1,45 +1,104 @@
-import { useQueryParam, NumberParam, StringParam } from "use-query-params";
+import { useQueryParams, NumberParam, StringParam } from "use-query-params";
 import { useCallback, useMemo } from "react";
-import { StoneType } from "../../stones/types";
+import {
+  Clarity,
+  DiamondColor,
+  Shape,
+  Stone,
+  StoneType,
+} from "../../stones/types";
 import { Filters } from "./types";
 
 const useCatalogFilters = () => {
-  const [page, onChangePage] = useQueryParam("page", NumberParam);
-  const [pageSize, onChangePageSize] = useQueryParam("pageSize", NumberParam);
+  const [
+    {
+      page,
+      pageSize,
+      query: searchQuery,
+      type: selectedType,
+      shape: selectedShape,
+      clarity: selectedClarity,
+      color: selectedColor,
+      sortBy,
+    },
+    onChangeState,
+  ] = useQueryParams({
+    page: NumberParam,
+    pageSize: NumberParam,
+    query: StringParam,
+    type: StringParam,
+    shape: StringParam,
+    clarity: StringParam,
+    color: StringParam,
+    sortBy: StringParam,
+  });
 
-  const [searchQuery, onChangeSearchQuery] = useQueryParam(
-    "query",
-    StringParam
+  const handleChangePage = useCallback(
+    (newValue: number) => {
+      onChangeState({ page: newValue });
+    },
+    [onChangeState]
   );
 
-  const [selectedType, onChangeSelectedType] = useQueryParam(
-    "type",
-    StringParam
-  );
-  const [selectedShape, onChangeSelectedShape] = useQueryParam(
-    "shape",
-    StringParam
-  );
-  const [selectedClarity, onChangeSelectedClarity] = useQueryParam(
-    "clarity",
-    StringParam
-  );
-  const [selectedColor, onChangeSelectedColor] = useQueryParam(
-    "color",
-    StringParam
+  const handleChangePageSize = useCallback(
+    (newValue: number) => {
+      const offset = (page ?? 0) * (pageSize ?? 0);
+
+      if (offset) {
+        const newPage = Math.floor(offset / newValue);
+
+        onChangeState({ page: newPage, pageSize: newValue });
+      } else {
+        onChangeState({ page: 0, pageSize: newValue });
+      }
+    },
+    [page, pageSize, onChangeState]
   );
 
-  const [sortBy, onChangeSortBy] = useQueryParam("sortBy", StringParam);
+  const handleChangeSearchQuery = useCallback(
+    (newValue?: string | null) => {
+      onChangeState({ page: 0, query: newValue });
+    },
+    [onChangeState]
+  );
 
   const handleChangeSelectedType = useCallback(
-    (newValue: StoneType) => {
+    (newValue?: StoneType | null) => {
       if (newValue !== "Diamond" && selectedColor) {
-        onChangeSelectedColor(undefined);
+        onChangeState({ page: 0, type: newValue, color: undefined });
+      } else {
+        onChangeState({ page: 0, type: newValue });
       }
-
-      onChangeSelectedType(newValue);
     },
-    [selectedColor, onChangeSelectedColor, onChangeSelectedType]
+    [selectedColor, onChangeState]
+  );
+
+  const handleChangeSelectedShape = useCallback(
+    (newValue?: Shape | null) => {
+      onChangeState({ page: 0, shape: newValue });
+    },
+    [onChangeState]
+  );
+
+  const handleChangeSelectedClarity = useCallback(
+    (newValue?: Clarity | null) => {
+      onChangeState({ page: 0, clarity: newValue });
+    },
+    [onChangeState]
+  );
+
+  const handleChangeSelectedColor = useCallback(
+    (newValue?: DiamondColor | null) => {
+      onChangeState({ page: 0, color: newValue });
+    },
+    [onChangeState]
+  );
+
+  const handleChangeSortBy = useCallback(
+    (newValue?: Exclude<keyof Stone, "id"> | null) => {
+      onChangeState({ page: 0, sortBy: newValue });
+    },
+    [onChangeState]
   );
 
   const filters: Filters = useMemo(
@@ -74,17 +133,17 @@ const useCatalogFilters = () => {
   return {
     filters,
     handlers: {
-      onChangePage,
-      onChangePageSize,
+      onChangePage: handleChangePage,
+      onChangePageSize: handleChangePageSize,
 
-      onChangeSearchQuery,
+      onChangeSearchQuery: handleChangeSearchQuery,
 
       onChangeSelectedType: handleChangeSelectedType,
-      onChangeSelectedShape,
-      onChangeSelectedClarity,
-      onChangeSelectedColor,
+      onChangeSelectedShape: handleChangeSelectedShape,
+      onChangeSelectedClarity: handleChangeSelectedClarity,
+      onChangeSelectedColor: handleChangeSelectedColor,
 
-      onChangeSortBy,
+      onChangeSortBy: handleChangeSortBy,
     },
   };
 };
