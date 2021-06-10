@@ -34,7 +34,9 @@ const handleFilterCatalog: HandleChangeCatalog = (
         (!selectedType || type === selectedType) &&
         (!selectedShape || shape === selectedShape) &&
         (!selectedClarity || clarity === selectedClarity) &&
-        (!selectedType || selectedType !== "Diamond" || color === selectedColor)
+        (!selectedColor ||
+          selectedType !== "Diamond" ||
+          color === selectedColor)
     ),
   };
 
