@@ -32,7 +32,7 @@ const useCatalogProducts = ({ filters }: Props) => {
     setLoadingTrue();
 
     dispatch({
-      type: "filter",
+      type: "paginate",
       payload: {
         filters,
         // callback: setLoadingFalse
@@ -40,7 +40,7 @@ const useCatalogProducts = ({ filters }: Props) => {
     });
 
     setLoadingFalse();
-  }, [selectedType, selectedShape, selectedClarity, selectedColor]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [page, pageSize]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setLoadingTrue();
@@ -54,7 +54,21 @@ const useCatalogProducts = ({ filters }: Props) => {
     });
 
     setLoadingFalse();
-  }, [page, pageSize, searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    setLoadingTrue();
+
+    dispatch({
+      type: "filter",
+      payload: {
+        filters,
+        // callback: setLoadingFalse
+      },
+    });
+
+    setLoadingFalse();
+  }, [selectedType, selectedShape, selectedClarity, selectedColor]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     setLoadingTrue();

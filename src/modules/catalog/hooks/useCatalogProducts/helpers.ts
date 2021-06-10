@@ -12,9 +12,10 @@ const DEFAULT_PAGE_SIZE = 20;
 
 const initialCatalogState: CatalogState = {
   initial: stones,
-  filtered: [],
-  searched: [],
-  sorted: [],
+  filtered: stones,
+  searched: stones,
+  sorted: stones,
+  paginated: stones,
 };
 
 const handleFilterCatalog: HandleChangeCatalog = (
@@ -103,9 +104,12 @@ const handlePaginateCatalog: HandleChangeCatalog = (
   // callback
 ) => {
   const { page, pageSize } = filters;
-  const offset = (page ?? 0) * (pageSize ?? 0);
+  const offset = (page ?? 0) * (pageSize ?? DEFAULT_PAGE_SIZE);
 
-  const paginated = sorted.slice(offset, pageSize || DEFAULT_PAGE_SIZE);
+  const paginated = sorted.slice(
+    offset,
+    offset + (pageSize || DEFAULT_PAGE_SIZE)
+  );
 
   const newState = {
     ...initialCatalogState,

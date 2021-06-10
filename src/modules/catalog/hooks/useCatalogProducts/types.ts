@@ -14,6 +14,7 @@ export interface CatalogState {
   filtered: Stones;
   searched: Stones;
   sorted: Stones;
+  paginated: Stones;
 }
 
 export type CatalogReducerAction = {
