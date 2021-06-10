@@ -1,12 +1,3 @@
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@material-ui/core";
 import React, { FC, useEffect } from "react";
 
 import { useCatalogFilters } from "./hooks/useCatalogFilters";
@@ -14,11 +5,15 @@ import { useCatalogProducts } from "./hooks/useCatalogProducts/useCatalogProducs
 
 const CatalogView: FC = () => {
   const { filters, handlers } = useCatalogFilters();
-  const { products } = useCatalogProducts({ filters });
+  const { catalogState } = useCatalogProducts({ filters });
 
   useEffect(() => {
     console.log("filters", filters);
   }, [filters]);
+
+  useEffect(() => {
+    console.log("catalogState", catalogState);
+  }, [catalogState]);
 
   return (
     <div>
@@ -35,7 +30,7 @@ const CatalogView: FC = () => {
         //       </TableRow>
         //     </TableHead>
         //     <TableBody>
-        //       {products.map((row) => (
+        //       {catalogState.sorted.map((row) => (
         //         <TableRow key={row.name}>
         //           <TableCell component="th" scope="row">
         //             {row.name}

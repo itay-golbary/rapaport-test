@@ -1,12 +1,12 @@
 import { Stones } from "../../../stones/types";
 import { Filters } from "../types";
 
-type Callback = () => void;
+// type Callback = () => void;
 
 export type HandleChangeCatalog = (
   state: CatalogState,
-  filters: Filters,
-  callback: Callback
+  filters: Filters
+  // callback: Callback
 ) => CatalogState;
 
 export interface CatalogState {
@@ -18,6 +18,9 @@ export interface CatalogState {
 }
 
 export type CatalogReducerAction = {
-  type: "filter" | "search" | "sort" | "group";
-  payload: { filters: Filters; callback: Callback };
+  type: "filter" | "search" | "sort";
+  payload: {
+    filters: Filters;
+    // callback: Callback;
+  };
 };

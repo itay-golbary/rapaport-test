@@ -1,5 +1,5 @@
 import { useQueryParam, NumberParam, StringParam } from "use-query-params";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { StoneType } from "../../stones/types";
 import { Filters } from "./types";
 
@@ -28,10 +28,6 @@ const useCatalogFilters = () => {
     "color",
     StringParam
   );
-
-  useEffect(() => {
-    console.log("searchQuery", searchQuery);
-  }, [searchQuery]);
 
   const handleChangeSelectedType = useCallback((newValue: StoneType) => {
     if (newValue !== "Diamond" && selectedColor) {

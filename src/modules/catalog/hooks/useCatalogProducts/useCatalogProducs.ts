@@ -10,8 +10,17 @@ interface Props {
 }
 
 const useCatalogProducts = ({ filters }: Props) => {
-  const { page, pageSize, searchQuery, sortBy, groupBy, ...businessFilters } =
-    filters;
+  const {
+    page,
+    pageSize,
+    searchQuery,
+    sortBy,
+    // groupBy,
+    selectedType,
+    selectedShape,
+    selectedClarity,
+    selectedColor,
+  } = filters;
 
   const [isLoading, setLoadingTrue, setLoadingFalse] = useFlag();
 
@@ -20,26 +29,63 @@ const useCatalogProducts = ({ filters }: Props) => {
     initialCatalogState
   );
 
+  useEffect(() => {
+    setLoadingTrue();
+
+    dispatch({
+      type: "filter",
+      payload: {
+        filters,
+        // callback: setLoadingFalse
+      },
+    });
+
+    setLoadingFalse();
+  }, [selectedType, selectedShape, selectedClarity, selectedColor]);
 
   useEffect(() => {
-    // setLoadingTrue();
+    setLoadingTrue();
 
-    dispatch({ type: "filter", payload: { filters, callback: () => {
-          setLoadingFalse()
-        } }});
-  }, [businessFilters]);
+    dispatch({
+      type: "search",
+      payload: {
+        filters,
+        // callback: setLoadingFalse
+      },
+    });
 
-  useEffect(() => {
-    dispatch({ type: "search", payload: { filters } });
+    setLoadingFalse();
   }, [page, pageSize, searchQuery]);
 
   useEffect(() => {
-    dispatch({ type: "sort", payload: { filters } });
+    setLoadingTrue();
+
+    dispatch({
+      type: "sort",
+      payload: {
+        filters,
+        // callback: setLoadingFalse
+      },
+    });
+
+    setLoadingFalse();
   }, [sortBy]);
 
-  useEffect(() => {
-    dispatch({ type: "group", payload: { filters } });
-  }, [groupBy]);
+  // useEffect(() => {
+  //   console.log("groupBy", groupBy);
+  //
+  //   setLoadingTrue();
+  //
+  //   dispatch({
+  //     type: "group",
+  //     payload: {
+  //       filters,
+  //       // callback: setLoadingFalse
+  //     },
+  //   });
+  //
+  //   setLoadingFalse();
+  // }, [groupBy]);
 
   return { isLoading, catalogState };
 };

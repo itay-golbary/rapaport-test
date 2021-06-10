@@ -1,8 +1,10 @@
 import { useCallback, useState } from "react";
 
-type InitialState = boolean;
+type UseFlag = (
+  initialState?: boolean
+) => [boolean, () => void, () => void, () => void];
 
-const useFlag = (initialState?: InitialState) => {
+const useFlag: UseFlag = (initialState) => {
   const [flag, setFlag] = useState(initialState ?? false);
 
   const setToTrue = useCallback(() => {

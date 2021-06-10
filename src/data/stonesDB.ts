@@ -1,4 +1,4 @@
-const stones = [
+const stonesDB = [
   {
     id: 1,
     type: "Diamond",
@@ -161,4 +161,4 @@ const stones = [
   },
 ];
 
-export default stones;
+export default stonesDB;

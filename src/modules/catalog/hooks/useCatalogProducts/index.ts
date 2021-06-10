@@ -1,0 +1,1 @@
+export { useCatalogProducts } from "./useCatalogProducs";
