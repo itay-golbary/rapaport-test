@@ -1,4 +1,5 @@
-import stonesDB from "../../data/stonesDB";
-import { Stones } from "./types";
+import { generateStones } from "./helpers";
 
-export default stonesDB as Stones;
+const stonesDB = generateStones();
+
+export default stonesDB;
