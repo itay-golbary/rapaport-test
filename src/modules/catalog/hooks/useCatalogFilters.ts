@@ -131,8 +131,9 @@ const useCatalogFilters = () => {
     ]
   );
 
-  const handlers: FilterHandlers = useMemo(
-    () => ({
+  return {
+    filters,
+    handlers: {
       onChangePage: handleChangePage,
       onChangePageSize: handleChangePageSize,
 
@@ -144,23 +145,8 @@ const useCatalogFilters = () => {
       onChangeSelectedColor: handleChangeSelectedColor,
 
       onChangeSortBy: handleChangeSortBy,
-    }),
-    [
-      handleChangePage,
-      handleChangePageSize,
-
-      handleChangeSearchQuery,
-
-      handleChangeSelectedType,
-      handleChangeSelectedShape,
-      handleChangeSelectedClarity,
-      handleChangeSelectedColor,
-
-      handleChangeSortBy,
-    ]
-  );
-
-  return { filters, handlers };
+    } as FilterHandlers,
+  };
 };
 
 export { useCatalogFilters };

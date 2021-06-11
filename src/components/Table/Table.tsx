@@ -11,7 +11,7 @@ import {
 
 import { Cell, Row } from "./types";
 
-const TableHeight = window.innerHeight - 49;
+const TableHeight = window.innerHeight - 105;
 
 interface Props {
   columns: Cell[];

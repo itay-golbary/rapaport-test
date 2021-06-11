@@ -1,13 +1,21 @@
 import React, { ChangeEventHandler, FC, useCallback } from "react";
-import { Input } from "@material-ui/core";
+import { OutlinedInput } from "@material-ui/core";
 
 export interface Props {
   value?: string | null;
   onChange: (value?: string | null) => void;
+  // name: string;
+  placeholder?: string;
   type?: string;
 }
 
-const TextInput: FC<Props> = ({ value, onChange, type = "text" }) => {
+const TextInput: FC<Props> = ({
+  // name,
+  placeholder,
+  value,
+  onChange,
+  type = "text",
+}) => {
   const handleChange: ChangeEventHandler<
     HTMLTextAreaElement | HTMLInputElement
   > = useCallback(
@@ -17,7 +25,15 @@ const TextInput: FC<Props> = ({ value, onChange, type = "text" }) => {
     [onChange]
   );
 
-  return <Input type={type} value={value} onChange={handleChange} />;
+  return (
+    <OutlinedInput
+      type={type}
+      // name={name}
+      placeholder={placeholder}
+      value={value}
+      onChange={handleChange}
+    />
+  );
 };
 
 export { TextInput };

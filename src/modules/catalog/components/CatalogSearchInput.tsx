@@ -1,26 +1,31 @@
 import React, { FC } from "react";
-import styled from "styled-components";
 
 import {
   TextInput,
   Props as TextInputProps,
 } from "../../../components/TextInput";
-
-const SerachHeight = 50;
-
-const StyledCatalogSearch = styled.div`
-  //height: 50px;
-`;
+import { Paper } from "@material-ui/core";
 
 interface Props
   extends Pick<TextInputProps, Exclude<keyof TextInputProps, "type">> {}
 
-const CatalogSearchInput: FC<Props> = ({ value, onChange }) => {
+const CatalogSearchInput: FC<Props> = ({
+  // search,
+  placeholder,
+  value,
+  onChange,
+}) => {
   return (
-    <StyledCatalogSearch>
-      <TextInput type={"search"} value={value ?? ""} onChange={onChange} />
-    </StyledCatalogSearch>
+    <Paper>
+      <TextInput
+        type={"search"}
+        // name={"search"}
+        placeholder={placeholder}
+        value={value ?? ""}
+        onChange={onChange}
+      />
+    </Paper>
   );
 };
 
-export { CatalogSearchInput, SerachHeight };
+export { CatalogSearchInput };

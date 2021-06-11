@@ -54,6 +54,8 @@ const CatalogView: FC = () => {
 
       <div className="Catalog__innerContainer">
         <CatalogSearchInput
+          // name={"Search"}
+          placeholder={"Search"}
           value={searchQuery}
           onChange={onChangeSearchQuery}
         />
