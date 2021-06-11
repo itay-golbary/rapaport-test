@@ -23,7 +23,7 @@ const columns: Cell[] = [
   { key: "color", text: "Color" },
 ];
 
-const ProductsGrid: FC<Props> = ({
+const CatalogProductsGrid: FC<Props> = ({
   products,
   count,
   page,
@@ -64,4 +64,4 @@ const ProductsGrid: FC<Props> = ({
   );
 };
 
-export { ProductsGrid };
+export { CatalogProductsGrid };

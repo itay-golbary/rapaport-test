@@ -2,9 +2,10 @@ import React, { FC } from "react";
 
 import { useCatalogFilters } from "./hooks/useCatalogFilters";
 import { useCatalogProducts } from "./hooks/useCatalogProducts";
-import { ProductsGrid } from "./components/ProductsGrid";
+import { CatalogProductsGrid } from "./components/CatalogProductsGrid";
 import { CatalogFilters } from "./components/CatalogFilters";
 import { StyledCatalog } from "./styles";
+import { CatalogSearchInput } from "./components/CatalogSearchInput";
 
 const CatalogView: FC = () => {
   const { filters, handlers } = useCatalogFilters();
@@ -13,6 +14,7 @@ const CatalogView: FC = () => {
   const {
     page,
     pageSize,
+    searchQuery,
     selectedType,
     selectedShape,
     selectedClarity,
@@ -23,6 +25,7 @@ const CatalogView: FC = () => {
   const {
     onChangePage,
     onChangePageSize,
+    onChangeSearchQuery,
     onChangeSelectedType,
     onChangeSelectedShape,
     onChangeSelectedClarity,
@@ -32,25 +35,30 @@ const CatalogView: FC = () => {
 
   return (
     <StyledCatalog>
+      <CatalogFilters
+        filters={{
+          selectedType,
+          selectedShape,
+          selectedClarity,
+          selectedColor,
+          sortBy,
+        }}
+        handlers={{
+          onChangeSelectedType,
+          onChangeSelectedShape,
+          onChangeSelectedClarity,
+          onChangeSelectedColor,
+          onChangeSortBy,
+        }}
+      />
+
       <div className="Catalog__innerContainer">
-        <CatalogFilters
-          filters={{
-            selectedType,
-            selectedShape,
-            selectedClarity,
-            selectedColor,
-            sortBy,
-          }}
-          handlers={{
-            onChangeSelectedType,
-            onChangeSelectedShape,
-            onChangeSelectedClarity,
-            onChangeSelectedColor,
-            onChangeSortBy,
-          }}
+        <CatalogSearchInput
+          value={searchQuery}
+          onChange={onChangeSearchQuery}
         />
 
-        <ProductsGrid
+        <CatalogProductsGrid
           products={catalogState.paginated}
           count={catalogState.sorted.length}
           page={page}

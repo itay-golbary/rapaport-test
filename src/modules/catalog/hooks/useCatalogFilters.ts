@@ -52,7 +52,9 @@ const useCatalogFilters = () => {
   const handleChangeSearchQuery: FilterHandlers["onChangeSearchQuery"] =
     useCallback(
       (newValue) => {
-        onChangeState({ page: 0, query: newValue });
+        setTimeout(() => {
+          onChangeState({ page: 0, query: newValue });
+        }, 0);
       },
       [onChangeState]
     );

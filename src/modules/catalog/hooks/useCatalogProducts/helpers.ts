@@ -52,11 +52,35 @@ const handleSearchCatalog: HandleChangeCatalog = (
   filters
   // callback
 ) => {
-  const { searchQuery } = filters;
+  const {
+    searchQuery,
+    selectedType,
+    selectedShape,
+    selectedClarity,
+    selectedColor,
+  } = filters;
+
+  const keys = [];
+
+  if (!selectedType) {
+    keys.push("type");
+  }
+
+  if (!selectedShape) {
+    keys.push("shape");
+  }
+
+  if (!selectedClarity) {
+    keys.push("clarity");
+  }
+
+  if (!selectedColor) {
+    keys.push("color");
+  }
 
   const fuse = new Fuse(filtered, {
     findAllMatches: true,
-    keys: ["type", "shape", "clarity", "color"],
+    keys,
   });
 
   const searched: Stones = searchQuery
@@ -138,7 +162,7 @@ const handleSortStones: HandleSortStones = (state, sortBy) => {
   ) {
     const sortByKey = sortBy as Exclude<keyof Stone, "id">;
 
-    return state.sort((a, b) => {
+    return [...state].sort((a, b) => {
       const { [sortByKey]: valueA } = a;
       const { [sortByKey]: valueB } = b;
 
