@@ -9,11 +9,11 @@ import {
   Paper,
 } from "@material-ui/core";
 
-import { Cell } from "./types";
+import { Cell, Row } from "./types";
 
 interface Props {
   columns: Cell[];
-  rows: Cell[][];
+  rows: Row[];
 }
 
 const Table: FC<Props> = ({ columns, rows }) => {
@@ -29,9 +29,9 @@ const Table: FC<Props> = ({ columns, rows }) => {
         </TableHead>
 
         <TableBody>
-          {rows.map((row, index) => (
-            <TableRow key={index.toString()}>
-              {row.map(({ key, text }) => (
+          {rows.map(({ key, cells }, index) => (
+            <TableRow key={key}>
+              {cells.map(({ key, text }) => (
                 <TableCell key={key}>{text}</TableCell>
               ))}
             </TableRow>

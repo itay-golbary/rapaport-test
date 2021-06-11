@@ -5,7 +5,7 @@ import { useCatalogProducts } from "./hooks/useCatalogProducts";
 import { ProductsGrid } from "./components/ProductsGrid";
 
 const CatalogView: FC = () => {
-  const { filters } = useCatalogFilters();
+  const { filters, handlers } = useCatalogFilters();
   const { catalogState } = useCatalogProducts({ filters });
 
   useEffect(() => {
@@ -18,7 +18,14 @@ const CatalogView: FC = () => {
 
   return (
     <div>
-      <ProductsGrid products={catalogState.paginated} />
+      <ProductsGrid
+        products={catalogState.paginated}
+        count={catalogState.sorted.length}
+        page={filters.page}
+        pageSize={filters.pageSize}
+        onChangePage={handlers.onChangePage}
+        onChangePageSize={handlers.onChangePageSize}
+      />
     </div>
   );
 };

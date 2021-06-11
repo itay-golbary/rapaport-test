@@ -3,5 +3,9 @@ import { Stone } from "../../modules/stones/types";
 export interface Cell {
   key: Exclude<keyof Stone, "id">;
   text?: string;
-  // align: "right" | "left" | "center";
+}
+
+export interface Row {
+  key: string;
+  cells: Cell[];
 }

@@ -1,11 +1,17 @@
 import React, { FC, useMemo } from "react";
 
 import { Table } from "../../../components/Table";
-import { Cell } from "../../../components/Table/types";
+import { Cell, Row } from "../../../components/Table/types";
 import { Stones } from "../../stones/types";
+import { Pagination } from "../../../components/Pagination";
 
 interface Props {
   products: Stones;
+  count: number;
+  page?: number | null;
+  pageSize?: number | null;
+  onChangePage: (value: number) => void;
+  onChangePageSize: (value: number) => void;
 }
 
 const columns: Cell[] = [
@@ -15,24 +21,42 @@ const columns: Cell[] = [
   { key: "color", text: "Color" },
 ];
 
-const ProductsGrid: FC<Props> = ({ products }) => {
-  const rows: Cell[][] = useMemo(() => {
-    const state: Cell[][] = [];
+const ProductsGrid: FC<Props> = ({
+  products,
+  count,
+  page,
+  pageSize,
+  onChangePage,
+  onChangePageSize,
+}) => {
+  const rows: Row[] = useMemo(() => {
+    const state: Row[] = [];
 
     products.forEach((product) => {
-      const row: Cell[] = [];
+      const cells: Cell[] = [];
 
       columns.forEach(({ key }) => {
-        row.push({ key, text: product[key] });
+        cells.push({ key, text: product[key] });
       });
 
-      state.push(row);
+      state.push({ key: product.id.toString(), cells });
     });
 
     return state;
   }, [products]);
 
-  return <Table columns={columns} rows={rows} />;
+  return (
+    <div>
+      <Table columns={columns} rows={rows} />
+      <Pagination
+        count={count}
+        page={page ?? 0}
+        rowsPerPage={pageSize ?? 10}
+        onChangePage={onChangePage}
+        onChangeRowsPerPage={onChangePageSize}
+      />
+    </div>
+  );
 };
 
 export { ProductsGrid };
