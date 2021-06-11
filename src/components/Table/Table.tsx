@@ -26,7 +26,9 @@ const Table: FC<Props> = ({ columns, rows }) => {
           <TableHead>
             <TableRow>
               {columns.map(({ key, text }) => (
-                <TableCell key={key}>{text}</TableCell>
+                <TableCell key={key} style={{ fontWeight: "bold" }}>
+                  {text}
+                </TableCell>
               ))}
             </TableRow>
           </TableHead>

@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC } from "react";
 
 import { useCatalogFilters } from "./hooks/useCatalogFilters";
 import { useCatalogProducts } from "./hooks/useCatalogProducts";
@@ -17,27 +17,48 @@ const CatalogView: FC = () => {
     selectedShape,
     selectedClarity,
     selectedColor,
+    sortBy,
   } = filters;
+
+  const {
+    onChangePage,
+    onChangePageSize,
+    onChangeSelectedType,
+    onChangeSelectedShape,
+    onChangeSelectedClarity,
+    onChangeSelectedColor,
+    onChangeSortBy,
+  } = handlers;
 
   return (
     <StyledCatalog>
-      <CatalogFilters
-        filters={{
-          selectedType,
-          selectedShape,
-          selectedClarity,
-          selectedColor,
-        }}
-      />
+      <div className="Catalog__innerContainer">
+        <CatalogFilters
+          filters={{
+            selectedType,
+            selectedShape,
+            selectedClarity,
+            selectedColor,
+            sortBy,
+          }}
+          handlers={{
+            onChangeSelectedType,
+            onChangeSelectedShape,
+            onChangeSelectedClarity,
+            onChangeSelectedColor,
+            onChangeSortBy,
+          }}
+        />
 
-      <ProductsGrid
-        products={catalogState.paginated}
-        count={catalogState.sorted.length}
-        page={page}
-        pageSize={pageSize}
-        onChangePage={handlers.onChangePage}
-        onChangePageSize={handlers.onChangePageSize}
-      />
+        <ProductsGrid
+          products={catalogState.paginated}
+          count={catalogState.sorted.length}
+          page={page}
+          pageSize={pageSize}
+          onChangePage={onChangePage}
+          onChangePageSize={onChangePageSize}
+        />
+      </div>
     </StyledCatalog>
   );
 };

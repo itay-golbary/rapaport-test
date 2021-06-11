@@ -67,4 +67,4 @@ const generateStones = () => {
   return list;
 };
 
-export { generateStones };
+export { generateStones, TypeList, ShapeList, ClarityList, DiamondColorList };

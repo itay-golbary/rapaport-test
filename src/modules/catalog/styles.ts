@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 const StyledCatalog = styled.div`
-  display: flex;
+  .Catalog__innerContainer {
+    display: flex;
+  }
 `;
 
 export { StyledCatalog };

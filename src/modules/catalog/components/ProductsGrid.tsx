@@ -1,11 +1,11 @@
 import React, { FC, useMemo } from "react";
+import { Paper } from "@material-ui/core";
 
 import { Table } from "../../../components/Table";
 import { Cell, Row } from "../../../components/Table/types";
 import { Stones } from "../../stones/types";
 import { Pagination } from "../../../components/Pagination";
 import { StyledProductsGrid } from "./types";
-import { PaperContainer } from "../../../components/PaperContainer";
 
 interface Props {
   products: Stones;
@@ -51,7 +51,7 @@ const ProductsGrid: FC<Props> = ({
     <StyledProductsGrid>
       <Table columns={columns} rows={rows} />
 
-      <PaperContainer className="ProductsGrid__paginationContainer">
+      <Paper className="ProductsGrid__paginationContainer">
         <Pagination
           count={count}
           page={page ?? 0}
@@ -59,7 +59,7 @@ const ProductsGrid: FC<Props> = ({
           onChangePage={onChangePage}
           onChangeRowsPerPage={onChangePageSize}
         />
-      </PaperContainer>
+      </Paper>
     </StyledProductsGrid>
   );
 };
