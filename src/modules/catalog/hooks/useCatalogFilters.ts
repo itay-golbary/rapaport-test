@@ -7,7 +7,7 @@ import {
   Stone,
   StoneType,
 } from "../../stones/types";
-import { Filters } from "./types";
+import { Filters } from "../types";
 
 const useCatalogFilters = () => {
   const [

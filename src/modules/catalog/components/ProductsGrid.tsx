@@ -4,6 +4,8 @@ import { Table } from "../../../components/Table";
 import { Cell, Row } from "../../../components/Table/types";
 import { Stones } from "../../stones/types";
 import { Pagination } from "../../../components/Pagination";
+import { StyledProductsGrid } from "./types";
+import { PaperContainer } from "../../../components/PaperContainer";
 
 interface Props {
   products: Stones;
@@ -46,16 +48,19 @@ const ProductsGrid: FC<Props> = ({
   }, [products]);
 
   return (
-    <div>
+    <StyledProductsGrid>
       <Table columns={columns} rows={rows} />
-      <Pagination
-        count={count}
-        page={page ?? 0}
-        rowsPerPage={pageSize ?? 10}
-        onChangePage={onChangePage}
-        onChangeRowsPerPage={onChangePageSize}
-      />
-    </div>
+
+      <PaperContainer className="ProductsGrid__paginationContainer">
+        <Pagination
+          count={count}
+          page={page ?? 0}
+          rowsPerPage={pageSize ?? 10}
+          onChangePage={onChangePage}
+          onChangeRowsPerPage={onChangePageSize}
+        />
+      </PaperContainer>
+    </StyledProductsGrid>
   );
 };
 

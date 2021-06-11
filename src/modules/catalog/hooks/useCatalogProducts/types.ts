@@ -1,5 +1,5 @@
 import { Stones } from "../../../stones/types";
-import { Filters } from "../types";
+import { Filters } from "../../types";
 
 // type Callback = () => void;
 

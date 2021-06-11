@@ -3,30 +3,42 @@ import React, { FC, useEffect } from "react";
 import { useCatalogFilters } from "./hooks/useCatalogFilters";
 import { useCatalogProducts } from "./hooks/useCatalogProducts";
 import { ProductsGrid } from "./components/ProductsGrid";
+import { CatalogFilters } from "./components/CatalogFilters";
+import { StyledCatalog } from "./styles";
 
 const CatalogView: FC = () => {
   const { filters, handlers } = useCatalogFilters();
   const { catalogState } = useCatalogProducts({ filters });
 
-  useEffect(() => {
-    console.log("filters", filters);
-  }, [filters]);
-
-  useEffect(() => {
-    console.log("catalogState", catalogState);
-  }, [catalogState]);
+  const {
+    page,
+    pageSize,
+    selectedType,
+    selectedShape,
+    selectedClarity,
+    selectedColor,
+  } = filters;
 
   return (
-    <div>
+    <StyledCatalog>
+      <CatalogFilters
+        filters={{
+          selectedType,
+          selectedShape,
+          selectedClarity,
+          selectedColor,
+        }}
+      />
+
       <ProductsGrid
         products={catalogState.paginated}
         count={catalogState.sorted.length}
-        page={filters.page}
-        pageSize={filters.pageSize}
+        page={page}
+        pageSize={pageSize}
         onChangePage={handlers.onChangePage}
         onChangePageSize={handlers.onChangePageSize}
       />
-    </div>
+    </StyledCatalog>
   );
 };
 

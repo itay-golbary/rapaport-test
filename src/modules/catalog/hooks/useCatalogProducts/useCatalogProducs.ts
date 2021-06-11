@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react";
 
-import { Filters } from "../types";
+import { Filters } from "../../types";
 import { initialCatalogState, stonesReducer } from "./helpers";
 
 import { useFlag } from "../../../../hooks/useFlag";
